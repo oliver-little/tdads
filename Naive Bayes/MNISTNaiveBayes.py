@@ -85,7 +85,7 @@ class NaiveBayes():
         # Creates an array of True/False values, true if results[x] == self.y_test[x]
         correctPredictions = results == self.y_test
         
-        return (sum(correctPredictions), len(correctPredictions))
+        return (sum(correctPredictions), len(correctPredictions))        
 
     # Separates a dataset by the labels provided 
     def separateByClass(self, data, labels):
@@ -101,6 +101,27 @@ class NaiveBayes():
             
         return byClass
 
+    def generateConfusionMatrix(self):
+        # Adapted from: https://stackoverflow.com/questions/50021928/build-confusion-matrix-from-two-vector
+        results = self.predict(self.x_test)
+
+        confusionMatrix = np.zeros((10, 10), dtype=int)
+        np.add.at(confusionMatrix, (results, self.y_test), 1)
+        return confusionMatrix
+
+    def displayConfusionMatrix(self):
+        matrix = self.generateConfusionMatrix()
+
+        print("Confusion matrix: ")
+        print()
+        print(" " + "".join('%6d' % num for num in range(10)))
+        for y in range(len(matrix)):
+            row = matrix[y]
+            print(str(y), end="")
+            for x in row:
+                print("{:6}".format(x), end="")
+            print()
+            
     # Displays a heatmap of the mean values of the pixels for a given class
     def plotHeatmap(self, number):
         if not hasattr(self, "normalInputs"):
@@ -129,6 +150,7 @@ if __name__ == "__main__":
     print("Prediction time: " + str(endTime - startTime) + "s")
     print("Score: " + str(correct) + "/" + str(total))
     print("Percentage: " + str((correct/total)* 100) + "%")
+    matrix = classifier.displayConfusionMatrix()
     input()
 
 
