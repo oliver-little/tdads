@@ -12,7 +12,7 @@ Your comments are generally pretty good, (could do with some docstrings) but e.g
 
 Do you use any numpy functions? If not, consider using base python arrays - they tend to be a little more readable. Alternatively, consider using numpy's functions! I'm certain you could do lines 47-60 in a single (fairly unreadable) line or just a couple of readable lines. For example:
 
-Function and variable names should be more descriptive (and PEP-8 compliant)
+Function and variable names should be more descriptive (and [PEP-8](https://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements) compliant)
 - maxgwidth? rend? lstart? what are these things? It may make sense to you but as someone glancing over your code it's much harder to read these.
 
 Try to avoid excessive indentation - this will improve readability
