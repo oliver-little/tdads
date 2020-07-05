@@ -1,7 +1,7 @@
 from time import perf_counter
 import keras
 import numpy as np
-from sklearn import cluster, metrics
+from sklearn import cluster, metrics, decomposition
 import matplotlib.pyplot as plt
 from skimage import transform
 
@@ -13,13 +13,17 @@ train_x_small = [transform.rescale(img, 0.25, anti_aliasing=True) for img in tra
 test_x_small = [transform.rescale(img, 0.25, anti_aliasing=True) for img in test_x]
 
 # flatten image data using list comprehension
-train_x_flat = [[item for sublist in image for item in sublist] for image in train_x_small]
-test_x_flat = [[item for sublist in image for item in sublist] for image in test_x_small]
+train_x_flat = np.array([[item for sublist in image for item in sublist] for image in train_x_small])
+test_x_flat = np.array([[item for sublist in image for item in sublist] for image in test_x_small])
+# train_x_flat = decomposition.PCA(n_components = 2).fit_transform(train_x_flat)
+# test_x_flat = decomposition.PCA(n_components = 2).fit_transform(test_x_flat)
 
 clock = perf_counter()
-db = cluster.DBSCAN(eps = 0.3, min_samples = 10, n_jobs=-1, verbose=1).fit(train_x_flat)
-print("TIME: {perf_counter() - clock}")
+db = cluster.DBSCAN(eps = 0.5, min_samples = 5, n_jobs=-1).fit(train_x_flat)
+print(f"TIME: {perf_counter() - clock}")
 labels = db.labels_
+core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+core_samples_mask[db.core_sample_indices_] = True
 
 n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
 n_noise = list(labels).count(-1)
