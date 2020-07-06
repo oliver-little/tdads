@@ -25,12 +25,15 @@ class MNISTSVMClassifier:
         self.x_train = vectorisedContrast(self.x_train.numpy())
         self.x_test = tf.reshape(self.x_test, [len(self.x_test), 784])
         self.x_test = vectorisedContrast(self.x_test.numpy())
-        
+
         # Set up PCA then fit to the training data.
         # The parameter represents the variance to retain (in this case retain 90% of the original variance)
         scaler = PCA(0.9).fit(self.x_train)
         self.x_train = scaler.transform(self.x_train)
         self.x_test = scaler.transform(self.x_test)
+
+        self.x_train, self.x_validate, self.y_train, self.y_validate = train_test_split(self.x_train, self.y_train, test_size=0.25, random_state=1)
+        
         if (model != None):
             self.clf = model
         else:
@@ -38,6 +41,7 @@ class MNISTSVMClassifier:
 
 
     def train(self):
+        # Currently using the first 10000 elements to keep training time relatively low
         self.clf.fit(self.x_train[:10000], self.y_train[:10000])
 
     def predict(self, images):
