@@ -7,15 +7,12 @@
 # Import of libraries
 import tensorflow as tf
 import tensorflow.keras.layers as KL
-import mnist
 import numpy as np
 import time
 
 # Load the training and testing images along with their respective labels
-train_images = mnist.train_images()
-train_labels = mnist.train_labels()
-test_images = mnist.test_images()
-test_labels = mnist.test_labels()
+mnist = tf.keras.datasets.mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 
 # Keep the data between 0 and 1
 train_images = (train_images/255)
@@ -40,11 +37,11 @@ model.compile(
     metrics=["acc"] 
 )
 start_fit = time.time()
-model.fit(train_images, train_labels, epochs = 20)
+model.fit(train_images, train_labels, epochs = 20)               
 
 # Calculate the accuracy from the predictions
 start_eval = time.time()
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 
 # Print the accuracy and loss values for the user along with the time taken to train and make predictions
-print("Loss: {0}- Acc: {1}- Time taken to train: {2} minutes- Time taken to predict: {3} seconds".format(test_loss, test_acc, (time.time() - start_fit)/60, time.time() - start_eval))
+print(f"Loss: {test_loss}- Acc: {test_acc}- Time taken to train: {(time.time() - start_fit)/60} minutes- Time taken to predict: {time.time() - start_eval} seconds")
