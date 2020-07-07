@@ -9,10 +9,10 @@ TODO: description
 ## K-Nearest Neighbours
 
 usage for K-Nearest_Neighbours without parallel processing:
-python K-Nearest-Neighbours.py
+'python K-Nearest-Neighbours.py'
 
 usage for K-Nearest_Neighbours with parallel processing:
-python K-Nearest-Neighbours_Parallel.py
+'python K-Nearest-Neighbours_Parallel.py'
 
 Parameters that must be tweaked:
 * test_images: x*28*28 numpy multidimensional array with entries between values inc. 0 and 255. In other words, x images that are sized 28x28 (provided in code x = 10,000 but x can be anything)
@@ -39,7 +39,7 @@ Note: When running these scripts, you may see warnings or errors but just ignore
 ## Recurrent Neural Network
 
 usage for Recurrent Neural Network:
-python Recurrent-Neural-Network.py
+'python Recurrent-Neural-Network.py'
 
 Parameters that must be tweaked:
 * test_images: x*28*28 numpy multidimensional array with entries between values inc. 0 and 255. In other words, x images that are sized 28x28 (provided in code x = 10,000 but x can be anything)
