@@ -20,10 +20,27 @@ mnist = tf.keras.datasets.mnist
 
 class_names = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
+#Display the first 10 images
+def display_data(x_train, y_train):
+    num = 10
+    images = x_train[:num]
+    labels = y_train[:num]
+    num_row = 2
+    num_col = 5
+
+    fig, axes = plt.subplots(num_row, num_col, figsize=(1.5*num_col, 2*num_row))
+    plt.title('Images in Training Set')
+    for i in range(num):
+        ax = axes[i//num_col, i%num_col]
+        ax.imshow(images[i], cmap='gray_r')
+        ax.set_title('Label: {}'.format(labels[i]))
+    plt.show()
+
 #Data preprocessing
 
 def get_data():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    display_data(x_train, y_train)
     #Normalise data to get value between 0 and 1
     x_train = x_train / 255.0
     x_test = x_test / 255.0
@@ -105,7 +122,7 @@ if __name__ == '__main__':
 
     #Sequential model used since each layer has exactly one input and one output tensor
     model = Sequential([
-        Dense(512, input_dim=784), 
+        Dense(512, input_dim=784), #
         Activation('relu'), #Activation function
         Dense(512), #512 output neurons
         Activation('relu'), #Replaces negative values with zero and keeps positive values
@@ -126,22 +143,40 @@ if __name__ == '__main__':
         optimizer = optimiser,
         metrics=['accuracy'],
     )
+    
+  
 
     #Train the model
     print("Fit model on training data")
-    model.fit(x_train, y_train, batch_size=64, epochs=5) #initially 15
+    model.fit(x_train, y_train, batch_size=64, epochs=15) #initially 15
 
     #Visualise model
-    #plot_model(model, to_file='model.png')
+
 
     #Evaluate model on test data
     accuracy = model.evaluate(x_test, y_test)
     print(f"Test accuracy: {accuracy}")
 
-    #Generate predictions for 3 samples
-    print("Predictions for 3 samples")
-    predictions = model.predict(x_test[:3])
+    #Generate predictions for 10 samples
+    print("Predictions for 10 samples")
+    predictions = model.predict(x_test[:10])
     print("Predictions shape: ", predictions.shape)
+    
+    y_new = model.predict_classes(x_test[:10])
+   # display_data(x_test[:10], y_new)
+    print("Visualising predictions")
+    num_row = 2
+    num_col = 5
+    (x_train_orig, y_train_orig), (x_test_orig, y_test_orig) = mnist.load_data()
+    images = x_test_orig[:10]
+    fig, axes = plt.subplots(num_row, num_col, figsize=(1.5*num_col, 2*num_row))
+    plt.title('Predictions')
+    for i in range(len(images)):
+        ax = axes[i//num_col, i%num_col]
+        ax.imshow(images[i], cmap='gray_r')
+        ax.set_title('Label: {}'.format(y_new[i]))
+   #     print("X=%s, Predicted=%s, Real=%s" % (x_test[:10][i], y_new[i]))        
+    plt.show()
 
  #   optimise_epochs()
 
