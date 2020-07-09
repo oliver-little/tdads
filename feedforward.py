@@ -7,12 +7,10 @@ from tensorflow.python.keras.layers.core import *
 from tensorflow.python.keras.optimizers import *
 import tensorflow as tf
 from keras.utils import plot_model
-#This import statement below is causing issues:
+#This sklearn import statement below is causing this issue:
 #ImportError: DLL load failed: The specified module could not be found.
 #from sklearn.model_selection import GridSearchCV
 
-
-#from tensorboard.plugins.hparams import api as hp
 
 '''A simple feed forward neural network with two hidden layers.'''
 
@@ -29,11 +27,12 @@ def display_data(x_train, y_train):
     num_col = 5
 
     fig, axes = plt.subplots(num_row, num_col, figsize=(1.5*num_col, 2*num_row))
-    plt.title('Images in Training Set')
+    fig.canvas.set_window_title('Images Labelled from Training Set')
     for i in range(num):
         ax = axes[i//num_col, i%num_col]
         ax.imshow(images[i], cmap='gray_r')
         ax.set_title('Label: {}'.format(labels[i]))
+    fig.tight_layout()
     plt.show()
 
 #Data preprocessing
@@ -79,7 +78,7 @@ def optimise_epochs():
 def optimise_optimizer():
     optimizer = ['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam', 'Ftrl']
     param_grid = dict(optimizer=optimizer)
-    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=3)
+    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1, cv=3)
     grid_result = grid.fit(x_train, y_train)
     # Summarise results
     print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
@@ -93,7 +92,7 @@ def optimise_optimizer():
 def optimise_lrate():
     learn_rate = [0.001, 0.01, 0.1, 0.2, 0.3]
     param_grid = dict(learn_rate=learn_rate)
-    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=3)
+    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1, cv=3)
     grid_result = grid.fit(x_train, y_train)
     # Summarise results
     print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
@@ -107,7 +106,7 @@ def optimise_lrate():
 def optimise_activation():
     activation = ['softmax', 'softplus', 'softsign', 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear']
     param_grid = dict(activation=activation)
-    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=3)
+    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=1, cv=3)
     grid_result = grid.fit(x_train, y_train)
     # Summarise results
     print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
@@ -145,13 +144,31 @@ if __name__ == '__main__':
     )
     
   
-
     #Train the model
     print("Fit model on training data")
-    model.fit(x_train, y_train, batch_size=64, epochs=15) #initially 15
+    history = model.fit(x_train, y_train, validation_split=0.2, batch_size=64, epochs=20) #initially 15
 
     #Visualise model
+    print("Model history keys")
+    print(history.history.keys())
+    
+    #Plot model accuracy
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title("Model Accuracy")
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
 
+    #Plot model loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title("Model Loss")
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
 
     #Evaluate model on test data
     accuracy = model.evaluate(x_test, y_test)
@@ -159,27 +176,24 @@ if __name__ == '__main__':
 
     #Generate predictions for 10 samples
     print("Predictions for 10 samples")
-    predictions = model.predict(x_test[:10])
-    print("Predictions shape: ", predictions.shape)
-    
+    predictions = model.predict(x_test[:10])  
     y_new = model.predict_classes(x_test[:10])
-   # display_data(x_test[:10], y_new)
+
     print("Visualising predictions")
     num_row = 2
     num_col = 5
     (x_train_orig, y_train_orig), (x_test_orig, y_test_orig) = mnist.load_data()
     images = x_test_orig[:10]
     fig, axes = plt.subplots(num_row, num_col, figsize=(1.5*num_col, 2*num_row))
-    plt.title('Predictions')
+    fig.canvas.set_window_title('Predicted Labels for 10 Samples')
     for i in range(len(images)):
         ax = axes[i//num_col, i%num_col]
         ax.imshow(images[i], cmap='gray_r')
         ax.set_title('Label: {}'.format(y_new[i]))
-   #     print("X=%s, Predicted=%s, Real=%s" % (x_test[:10][i], y_new[i]))        
+    fig.tight_layout()      
     plt.show()
 
- #   optimise_epochs()
-
+   
 
 
 
