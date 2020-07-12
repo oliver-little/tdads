@@ -8,6 +8,6 @@ end
 echo -e "Making" (echo $argv) "a compatible python module..."
 
 touch $argv[1]/__init__.py
-echo "from ." (echo $argv[2]) "import fit, predict" > $argv[1]/__init__.py
+echo -e "from . "(echo $argv[2]) " import fit, predict" > $argv[1]/__init__.py
 
 echo "done"

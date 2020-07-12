@@ -35,7 +35,12 @@ from tensorflow.keras.callbacks import LearningRateScheduler
 # plt.subplots_adjust(wspace=-0.1, hspace=-0.1)
 # plt.show()
 
-def fit(x_train, y_train):
+num_nets = 15
+
+def fit(x_train, y_train, plot = False, nets = 15, epochs = 45):
+    global num_nets
+    num_nets = nets
+
     x_train = x_train.reshape((x_train.shape[0], 28, 28, 1))
     y_train = to_categorical(y_train)
     # Generate extra images! Keras does this for us.
@@ -48,23 +53,23 @@ def fit(x_train, y_train):
 
 
     # plot the newly-generated data
-    # X_train3 = X_train[9,].reshape((1,28,28,1))
-    # Y_train3 = Y_train[9,].reshape((1,10))
-    # plt.figure(figsize=(15,4.5))
-    # for i in range(30):
-    #     plt.subplot(3, 10, i+1)
-    #     X_train2, Y_train2 = datagen.flow(X_train3,Y_train3).next()
-    #     plt.imshow(X_train2[0].reshape((28,28)),cmap=plt.cm.binary)
-    #     plt.axis('off')
-    #     if i==9: X_train3 = X_train[11,].reshape((1,28,28,1))
-    #     if i==19: X_train3 = X_train[18,].reshape((1,28,28,1))
-    # plt.subplots_adjust(wspace=-0.1, hspace=-0.1)
-    # plt.show()
+    if plot:
+        X_train3 = X_train[9,].reshape((1,28,28,1))
+        Y_train3 = Y_train[9,].reshape((1,10))
+        plt.figure(figsize=(15,4.5))
+        for i in range(30):
+            plt.subplot(3, 10, i+1)
+            X_train2, Y_train2 = datagen.flow(X_train3,Y_train3).next()
+            plt.imshow(X_train2[0].reshape((28,28)),cmap=plt.cm.binary)
+            plt.axis('off')
+            if i==9: X_train3 = X_train[11,].reshape((1,28,28,1))
+            if i==19: X_train3 = X_train[18,].reshape((1,28,28,1))
+        plt.subplots_adjust(wspace=-0.1, hspace=-0.1)
+        plt.show()
 
 
     # Configure Neural Networks
     # This uses an adaptation of LeNet5's design
-    nets = 15
     models = [0] * nets
     for j in range(nets):
         models[j] = Sequential()
@@ -99,7 +104,6 @@ def fit(x_train, y_train):
 
     # do the training - takes ~2.5hrs for me (NVidia Compute Capability ~6.1)
     history = [0] * nets
-    epochs = 45
     for j in range(nets):
       X_train2, X_val2, Y_train2, Y_val2 = train_test_split(x_train, y_train, test_size = 0.1)
       history[j] = models[j].fit_generator(datagen.flow(X_train2, Y_train2, batch_size=64),
@@ -108,24 +112,26 @@ def fit(x_train, y_train):
       print("CNN {0:d}: Epochs={1:d}, Train Acc.={2:.5f}, Validation Acc.={3:.5f}".format(j+1, epochs, max(history[j].history['acc']),max(history[j].history['val_acc'])))
     return history, models
 
-def predict(x_test, args):
+def predict(x_test, args, plot=False):
     history, models = args
     x_test = x_test.reshape((x_test.shape[0], 28, 28, 1))
 
     # predict for test data
     results = np.zeros((x_test.shape[0], 10))
-    for j in range(nets):
+    for j in range(num_nets):
       results = results + models[j].predict(x_test)
     results = np.argmax(results, axis=1)
     results = pd.Series(results, name='Label')
-    return results
 
     # plot the results
-    # plt.figure(figsize=(15,6))
-    # for i in range(40):
-    #     plt.subplot(4, 10, i+1)
-    #     plt.imshow(X_test[i].reshape((28,28)),cmap=plt.cm.binary)
-    #     plt.title("predict=%d" % results[i],y=0.9)
-    #     plt.axis('off')
-    # plt.subplots_adjust(wspace=0.3, hspace=-0.1)
-    # plt.show()
+    if plot:
+        plt.figure(figsize=(15,6))
+        for i in range(40):
+            plt.subplot(4, 10, i+1)
+            plt.imshow(X_test[i].reshape((28,28)),cmap=plt.cm.binary)
+            plt.title("predict=%d" % results[i],y=0.9)
+            plt.axis('off')
+        plt.subplots_adjust(wspace=0.3, hspace=-0.1)
+        plt.show()
+
+    return results

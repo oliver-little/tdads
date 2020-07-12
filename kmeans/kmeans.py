@@ -66,7 +66,7 @@ def infer_data_labels(X_labels, cluster_labels):
 
     return predicted_labels
 
-def fit(x_train, train_y):
+def fit(x_train, train_y, plot=False):
     # flatten image data using list comprehension
     train_x_flat = [[item for sublist in image for item in sublist] for image in x_train]
 
@@ -89,7 +89,7 @@ def fit(x_train, train_y):
         titles.append(i)
         images_to_show.append(images[cluster_labels[i][0]])
 
-    if 'plot' in kwargs:
+    if plot:
         # plot (some) centroids
         fig, axs = plt.subplots(5, 2, figsize = (20, 20))
         plt.gray()
@@ -101,15 +101,23 @@ def fit(x_train, train_y):
 
         plt.show()
 
-    return kmeans,
+    return kmeans, cluster_labels
 
 def predict(test_x, args):
-    kmeans = args[0]
+    kmeans, cluster_labels = args
     # flatten image data using list comprehension
     test_x_flat = [[item for sublist in image for item in sublist] for image in test_x]
 
     # calculate and print accuracy
     test_clusters = kmeans.predict(test_x_flat)
     predicted_labels = infer_data_labels(test_clusters, cluster_labels)
-    print(f'Accuracy: {metrics.accuracy_score(test_y, predicted_labels)}')
+    # print(f'Accuracy: {metrics.accuracy_score(test_y, predicted_labels)}')
     return predicted_labels
+
+if __name__ == '__main__':
+    import keras.datasets as kd
+    (train_x, train_y), (test_x, test_y) = kd.mnist.load_data()
+
+    res = fit(train_x, train_y)
+    preds = predict(test_x, res)
+    print(preds)
