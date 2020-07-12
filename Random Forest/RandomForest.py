@@ -15,7 +15,7 @@ from sklearn.ensemble import RandomForestClassifier
 # Both PCA and increasing the contrast had a negative impact.
 
 def fit(x_train, y_train):
-    clf = RandomForestClassifier(n_estimators=200, n_jobs=-1, verbose=1)
+    clf = RandomForestClassifier(n_estimators=200, n_jobs=-1)
     x_train = np.asarray(x_train).reshape((len(x_train), 784))
     clf.fit(x_train, y_train)
     return [clf]
