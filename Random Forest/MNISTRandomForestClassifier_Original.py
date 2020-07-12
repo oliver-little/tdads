@@ -2,7 +2,6 @@ import tensorflow as tf
 import numpy as np
 import time
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.decomposition import PCA
 
 # Trains a number of decision trees on random samples of the dataset, and makes predictions by majority rule of all estimators.
 # With enough estimators, accuracy can be very high.
