@@ -66,7 +66,7 @@ def predict(images, reg):
 UNCOMMENT TO RUN WITHIN FILE
 
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
-reg = fit([train_images, train_labels])
+reg = fit(train_images, train_labels)
 predictions = predict(test_images, reg)
 print(predictions)
 
