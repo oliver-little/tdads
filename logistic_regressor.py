@@ -26,7 +26,7 @@ class LogisticRegressor():
         train_labels = np_utils.to_categorical(train_labels, self.output_size)
 
         epochs = 10
-        batch_size = 128
+        batch_size = 4
   
         self.model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate = 0.01), loss='categorical_crossentropy', metrics=['accuracy'])
         history = self.model.fit(train_images, train_labels,
@@ -45,10 +45,10 @@ class LogisticRegressor():
 
         return predictions
 
-def fit(images):
+def fit(x_train, y_train):
     regressor = LogisticRegressor()
     regressor.load_model()
-    regressor.run_model(train_images=images[0], train_labels=images[1])
+    regressor.run_model(train_images=x_train, train_labels=y_train)
 
     return [regressor]
 
@@ -57,9 +57,13 @@ def predict(images, reg):
     regressor = reg[0]
 
     return regressor.predict_model(images)
-    
+
+"""
+UNCOMMENT TO RUN WITHIN FILE
 
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
 reg = fit([train_images, train_labels])
 predictions = predict(test_images, reg)
+print(predictions)
 
+"""
