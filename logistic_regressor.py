@@ -61,6 +61,5 @@ def predict(images, reg):
 
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
 reg = fit([train_images, train_labels])
-predictions = predict(reg, test_images)
-print(predictions)
-print(test_labels)
+predictions = predict(test_images, reg)
+
