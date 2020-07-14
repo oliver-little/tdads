@@ -12,7 +12,7 @@ models = {
     },
     "rnn": {
         "fit": {
-            "epochs" = 594
+            "epochs": 594
         },
         "predict": None,
         "enabled": True,
@@ -82,8 +82,8 @@ models = {
     "kneighbours": {
         "fit": None,
         "predict": {
-            "threads_n" : 8,
-            "k_value" : 10
+            "threads_n": 8,
+            "k_value": 10
         },
         "enabled": True,
     },
