@@ -2,6 +2,7 @@ import importlib
 import time
 import json
 from pprint import pprint
+import copy
 
 import numpy as np
 import keras.datasets as kd
@@ -34,17 +35,17 @@ for module_string, kwargs in modules.items():
     clock = time.perf_counter()
     fit_result = None
     if kwargs["fit"] is not None:
-        fit_result = module.fit(train_x, train_y, **kwargs["fit"])
+        fit_result = module.fit(copy.deepcopy(train_x), copy.deepcopy(train_y), **kwargs["fit"])
     else:
-        fit_result = module.fit(train_x, train_y)
+        fit_result = module.fit(copy.deepcopy(train_x), copy.deepcopy(train_y))
     train_time = time.perf_counter() - clock
 
     print(f"Predicting from model {module_string}")
     predictions = None
     if kwargs["predict"] is not None:
-        predictions = module.predict(test_x, fit_result, **kwargs["predict"])
+        predictions = module.predict(copy.deepcopy(test_x), fit_result, **kwargs["predict"])
     else:
-        predictions = module.predict(test_x, fit_result)
+        predictions = module.predict(copy.deepcopy(test_x), fit_result)
 
     print(f"Calculating {module_string} metrics")
     metrics[module_string] = calculate_metrics(test_y, predictions, train_time)

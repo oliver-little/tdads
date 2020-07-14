@@ -1,6 +1,10 @@
 # TDADS config
 
 modules = {
+    "feature_detect": {
+        "fit": None,
+        "predict": None,
+    },
     "naive_bayes": {
         "fit": {
 
