@@ -26,6 +26,7 @@ models = {
 		"predict": {
 			[predict parameters as dict, if applicable]
 		},
+		"enabled": [True/False]
 	},
 	...
 }
