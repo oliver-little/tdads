@@ -9,7 +9,7 @@ import tensorflow as tf
 import tensorflow.keras.layers as KL
 import numpy as np
 
-def fit(x_train, y_train, epochs = 20):
+def fit(x_train, y_train, epochs = 594):
     # Keep the data between 0 and 1
     x_train = (x_train/255)
 
@@ -43,9 +43,9 @@ def predict(x_test, model):
     return np.argmax(model.predict(x_test), axis = 1)
 
 # Load the training and testing images along with their respective labels
-# mnist = tf.keras.datasets.mnist
-# (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+mnist = tf.keras.datasets.mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 
 # Predict the first test image
-# print(predict(test_images, fit(train_images, train_labels, epochs = 2))[0])
-# print(test_labels[0])
+print(predict(test_images, fit(train_images, train_labels))[0])
+print(test_labels[0])
