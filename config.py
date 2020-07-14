@@ -15,11 +15,6 @@ models = {
         "predict": None,
         "enabled": True,
     },
-    "kneighbours": {
-        "fit": None,
-        "predict": None,
-        "enabled": True,
-    },
     "linear_regression": {
         "fit": None,
         "predict": None,
@@ -80,6 +75,11 @@ models = {
         "predict": {
 
         },
+        "enabled": True,
+    },
+    "kneighbours": {
+        "fit": None,
+        "predict": None,
         "enabled": True,
     },
 }
