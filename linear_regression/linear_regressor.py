@@ -30,7 +30,7 @@ class LinearRegressor:
         
       predictions = self.model.predict(test_images) 
 
-      return predictions
+      return predictions.astype(np.int)
 
 
 
@@ -61,7 +61,6 @@ def predict(images, reg):
 
     regressor = reg[0]
     return regressor.predict_model(images)
-    
 """
 UNCOMMENT TO RUN WITHIN FILE
 
@@ -69,5 +68,4 @@ UNCOMMENT TO RUN WITHIN FILE
 reg = fit(train_images, train_labels)
 predictions = predict(test_images, reg)
 print(predictions)
-
 """

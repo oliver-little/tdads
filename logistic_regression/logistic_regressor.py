@@ -43,7 +43,7 @@ class LogisticRegressor():
 
         predictions = self.model.predict(test_images) 
 
-        return predictions
+        return predictions.argmax(axis=1)
 
 def fit(x_train, y_train):
     regressor = LogisticRegressor()
@@ -57,7 +57,6 @@ def predict(images, reg):
     regressor = reg[0]
 
     return regressor.predict_model(images)
-
 """
 UNCOMMENT TO RUN WITHIN FILE
 
@@ -65,5 +64,6 @@ UNCOMMENT TO RUN WITHIN FILE
 reg = fit(train_images, train_labels)
 predictions = predict(test_images, reg)
 print(predictions)
-
+print(predictions.shape)
+print(test_labels)
 """
