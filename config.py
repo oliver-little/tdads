@@ -11,7 +11,9 @@ models = {
         "enabled": True,
     },
     "rnn": {
-        "fit": None,
+        "fit": {
+            "epochs" = 594
+        },
         "predict": None,
         "enabled": True,
     },
@@ -79,7 +81,10 @@ models = {
     },
     "kneighbours": {
         "fit": None,
-        "predict": None,
+        "predict": {
+            "threads_n" : 8,
+            "k_value" : 10
+        },
         "enabled": True,
     },
 }
