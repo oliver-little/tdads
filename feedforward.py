@@ -18,6 +18,7 @@ mnist = tf.keras.datasets.mnist
 
 class_names = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
+
 #Display the first 10 images
 def display_data(x_train, y_train):
     num = 10
@@ -59,6 +60,42 @@ def one_hot(y):
         out[i, int(y[i])] = 1
 
     return out
+
+  
+#Methods for George
+#display_data and one_hot methods also required (see top of file)
+
+def fit(x_train, y_train):
+    #Data preprocessing
+    display_data(x_train, y_train)
+    x_train = x_train / 255.0
+    x_train = x_train.reshape([-1, 784])
+    y_train = one_hot(y_train)
+    model = Sequential([
+        Dense(512, input_dim=784), 
+        Activation('relu'), 
+        Dense(512), 
+        Activation('relu'), 
+        Dense(512),
+        Activation('relu'),
+        Dense(10),
+        Activation('softmax') 
+    ])
+    optimiser = keras.optimizers.Adam(learning_rate=0.01)
+    model.compile(
+        loss='categorical_crossentropy', #Loss function for one hot inputs
+        optimizer = optimiser,
+        metrics=['accuracy'],
+    )
+    model.fit(x_train, y_train, validation_split=0.2, batch_size=64, epochs=20)
+    return model
+   
+def predict(x_test, model):
+    y_pred = model.predict(x_test)
+    smooth_predictions = []
+    for row in y_pred:
+        smooth_predictions.append(np.argmax(row))
+    return smooth_predictions
 
 
 if __name__ == '__main__':
@@ -124,6 +161,8 @@ if __name__ == '__main__':
     predictions = model.predict(x_test[:10])  
     y_new = model.predict_classes(x_test[:10])
     y_pred = model.predict(x_test)
+    print("Shape of predictions")
+    print(y_pred.shape)
 
     #Generate confusion matrix
 
@@ -136,6 +175,7 @@ if __name__ == '__main__':
     sns.heatmap(matrix.T, square=True, annot=True, cbar=False, cmap=plt.cm.Blues)
     plt.xlabel('Predicted Values')
     plt.ylabel('True Values')
+    plt.title('Confusion Matrix')
     plt.show()
 
     print("Visualising predictions")
@@ -152,7 +192,8 @@ if __name__ == '__main__':
     fig.tight_layout()      
     plt.show()
 
-   
+  
+    
 
 
 
