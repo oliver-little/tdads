@@ -12,7 +12,7 @@ import config
 (train_x, train_y), (test_x, test_y) = kd.mnist.load_data()
 modules = config.modules
 
-def calculate_metrics(test_y, predictions, train_time):
+def calculate_metrics(test_y, predictions, train_time, predict_time):
     # return dictionary
     mets = {}
     # calculate accuracy by summing truth values
@@ -22,6 +22,8 @@ def calculate_metrics(test_y, predictions, train_time):
     np.add.at(confusion_matrix, (predictions, test_y), 1)
     mets["confusion_matrix"] = confusion_matrix.tolist()
 
+
+    mets['predict_time'] = predict_time
     mets["train_time"] = str(train_time) + "s"
 
     return mets
@@ -41,14 +43,16 @@ for module_string, kwargs in modules.items():
     train_time = time.perf_counter() - clock
 
     print(f"Predicting from model {module_string}")
+    clock = time.perf_counter()
     predictions = None
     if kwargs["predict"] is not None:
         predictions = module.predict(copy.deepcopy(test_x), fit_result, **kwargs["predict"])
     else:
         predictions = module.predict(copy.deepcopy(test_x), fit_result)
+    predict_time = time.perf_counter() - clock
 
     print(f"Calculating {module_string} metrics")
-    metrics[module_string] = calculate_metrics(test_y, predictions, train_time)
+    metrics[module_string] = calculate_metrics(test_y, predictions, train_time, predict_time)
     print(f"Finished {module_string}\n")
 
     with open("results.json", "w") as json_file:

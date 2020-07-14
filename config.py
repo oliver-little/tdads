@@ -1,6 +1,10 @@
 # TDADS config
 
 modules = {
+    "feedforward": {
+        "fit": None,
+        "predict": None,
+    },
     "rnn": {
         "fit": None,
         "predict": None,
