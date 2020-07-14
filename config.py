@@ -8,21 +8,21 @@ models = {
         "predict": {
             "plot": False,
         },
-        "enabled": True,
+        "enabled": False,
     },
     "rnn": {
         "fit": {
             "epochs": 594
         },
         "predict": None,
-        "enabled": True,
+        "enabled": False,
     },
-    "linear_regression": {
+    "logistic_regression": {
         "fit": None,
         "predict": None,
         "enabled": True,
     },
-    "logistic_regression": {
+    "linear_regression": {
         "fit": None,
         "predict": None,
         "enabled": True,
