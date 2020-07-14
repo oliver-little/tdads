@@ -11,7 +11,7 @@ To run the code as-is, run `python main.py` from the main folder.
 
 ### Interpreting Results
 
-Results of models are saved to `results.json`, which stores the confusion matrix, accuracy, training and prediction times for each model.
+Results of models are saved to `results.json`, which stores the confusion matrix, accuracy, training and prediction times (in seconds) for each model.
 
 ## Configuration
 
@@ -26,6 +26,7 @@ models = {
 		"predict": {
 			[predict parameters as dict, if applicable]
 		},
+		"enabled": [True/False]
 	},
 	...
 }
