@@ -70,9 +70,9 @@ models = {
     },
     "cnn": {
         "fit": {
-            "nets": 1,
-            "epochs": 1,
-            "plot": False,
+            "nets": 15,
+            "epochs": 45,
+            "plot": False
         },
         "predict": {
 
