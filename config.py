@@ -1,6 +1,22 @@
 # TDADS config
 
 modules = {
+    "rnn": {
+        "fit": None,
+        "predict": None,
+    },
+    "kneighbours": {
+        "fit": None,
+        "predict": None,
+    },
+    "linear_regression": {
+        "fit": None,
+        "predict": None,
+    },
+    "logistic_regression": {
+        "fit": None,
+        "predict": None,
+    },
     "feature_detect": {
         "fit": None,
         "predict": None,
