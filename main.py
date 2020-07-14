@@ -10,7 +10,7 @@ import keras.datasets as kd
 import config
 
 (train_x, train_y), (test_x, test_y) = kd.mnist.load_data()
-modules = config.modules
+modules = config.models
 
 def calculate_metrics(test_y, predictions, train_time, predict_time):
     # return dictionary
@@ -24,13 +24,15 @@ def calculate_metrics(test_y, predictions, train_time, predict_time):
 
 
     mets['predict_time'] = predict_time
-    mets["train_time"] = str(train_time) + "s"
+    mets["train_time"] = train_time
 
     return mets
 
 metrics = {}
 
 for module_string, kwargs in modules.items():
+    if not kwargs["enabled"]:
+        continue
     module = importlib.import_module(module_string)
 
     print(f"Fitting model {module_string}")

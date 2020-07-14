@@ -61,25 +61,26 @@ def one_hot(y):
 
     return out
 
-  
+
 #Methods for George
 #display_data and one_hot methods also required (see top of file)
 
-def fit(x_train, y_train):
+def fit(x_train, y_train, plot = True):
     #Data preprocessing
-    display_data(x_train, y_train)
+    if plot:
+        display_data(x_train, y_train)
     x_train = x_train / 255.0
     x_train = x_train.reshape([-1, 784])
     y_train = one_hot(y_train)
     model = Sequential([
-        Dense(512, input_dim=784), 
-        Activation('relu'), 
-        Dense(512), 
-        Activation('relu'), 
+        Dense(512, input_dim=784),
+        Activation('relu'),
+        Dense(512),
+        Activation('relu'),
         Dense(512),
         Activation('relu'),
         Dense(10),
-        Activation('softmax') 
+        Activation('softmax')
     ])
     optimiser = keras.optimizers.Adam(learning_rate=0.01)
     model.compile(
@@ -89,8 +90,13 @@ def fit(x_train, y_train):
     )
     model.fit(x_train, y_train, validation_split=0.2, batch_size=64, epochs=20)
     return model
-   
-def predict(x_test, model):
+
+def predict(x_test, model, plot = True):
+    #Normalise data to get value between 0 and 1
+    x_test = x_test / 255.0
+    #Change dimension of numpy array mnist 784
+    x_test = x_test.reshape([-1, 784])
+
     y_pred = model.predict(x_test)
     smooth_predictions = []
     for row in y_pred:
@@ -113,7 +119,7 @@ if __name__ == '__main__':
         Activation('softmax') #Normalisation
     ])
 
-    #Could change this optimiser 
+    #Could change this optimiser
     #Adam optimisation is a stochastic gradient descent method
     #Can handle sparse gradients on noisy problems
     optimiser = keras.optimizers.Adam(learning_rate=0.01)
@@ -124,8 +130,8 @@ if __name__ == '__main__':
         optimizer = optimiser,
         metrics=['accuracy'],
     )
-    
-  
+
+
     #Train the model
     print("Fit model on training data")
     history = model.fit(x_train, y_train, validation_split=0.2, batch_size=64, epochs=20) #initially 15
@@ -133,7 +139,7 @@ if __name__ == '__main__':
     #Visualise model
     print("Model history keys")
     print(history.history.keys())
-    
+
     #Plot model accuracy
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
@@ -158,7 +164,7 @@ if __name__ == '__main__':
 
     #Generate predictions for 10 samples
     print("Predictions for 10 samples")
-    predictions = model.predict(x_test[:10])  
+    predictions = model.predict(x_test[:10])
     y_new = model.predict_classes(x_test[:10])
     y_pred = model.predict(x_test)
     print("Shape of predictions")
@@ -189,13 +195,5 @@ if __name__ == '__main__':
         ax = axes[i//num_col, i%num_col]
         ax.imshow(images[i], cmap='gray_r')
         ax.set_title('Label: {}'.format(y_new[i]))
-    fig.tight_layout()      
+    fig.tight_layout()
     plt.show()
-
-  
-    
-
-
-
-
-    
