@@ -9,9 +9,7 @@ import tensorflow as tf
 import tensorflow.keras.layers as KL
 import numpy as np
 
-
 def fit(x_train, y_train, epochs = 20):
-
     # Keep the data between 0 and 1
     x_train = (x_train/255)
 
@@ -38,7 +36,6 @@ def fit(x_train, y_train, epochs = 20):
     return model
 
 def predict(x_test, model):
-
     # Keep the data between 0 and 1
     x_test = (x_test/255)
 
