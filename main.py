@@ -31,7 +31,7 @@ def calculate_metrics(test_y, predictions, train_time, predict_time):
 metrics = {}
 
 for module_string, kwargs in modules.items():
-    if not kwargs["enabled"]:
+    if "enabled" in kwargs and not kwargs["enabled"]:
         continue
     module = importlib.import_module(module_string)
 

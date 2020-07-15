@@ -1,6 +1,10 @@
 # TDADS config
 
 models = {
+    "zero_r": {
+        "fit": None,
+        "predict": None,
+    },
     "feedforward": {
         "fit": {
             "plot": False,
@@ -17,12 +21,12 @@ models = {
         "predict": None,
         "enabled": False,
     },
-    "logistic_regression": {
+    "linear_regression": {
         "fit": None,
         "predict": None,
         "enabled": True,
     },
-    "linear_regression": {
+    "logistic_regression": {
         "fit": None,
         "predict": None,
         "enabled": True,
