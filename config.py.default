@@ -1,6 +1,11 @@
 # TDADS config
 
 models = {
+    "zero_r": {
+    	"fit": None,
+	"predict": None,
+	"enabled": True,
+    },
     "feedforward": {
         "fit": {
             "plot": False,
@@ -11,11 +16,6 @@ models = {
         "enabled": True,
     },
     "rnn": {
-        "fit": None,
-        "predict": None,
-        "enabled": True,
-    },
-    "kneighbours": {
         "fit": None,
         "predict": None,
         "enabled": True,
@@ -73,13 +73,21 @@ models = {
     },
     "cnn": {
         "fit": {
-            "nets": 1,
-            "epochs": 1,
+            "nets": 15,
+            "epochs": 45,
             "plot": False,
         },
         "predict": {
 
         },
+        "enabled": True,
+    },
+    "kneighbours": {
+        "fit": None,
+        "predict": {
+            "threads_n": 8,
+	    "k_value": 10,
+	},
         "enabled": True,
     },
 }

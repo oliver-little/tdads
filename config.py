@@ -2,8 +2,9 @@
 
 models = {
     "zero_r": {
-        "fit": None,
-        "predict": None,
+    	"fit": None,
+	"predict": None,
+	"enabled": True,
     },
     "feedforward": {
         "fit": {
@@ -12,14 +13,12 @@ models = {
         "predict": {
             "plot": False,
         },
-        "enabled": False,
+        "enabled": True,
     },
     "rnn": {
-        "fit": {
-            "epochs": 594
-        },
+        "fit": None,
         "predict": None,
-        "enabled": False,
+        "enabled": True,
     },
     "linear_regression": {
         "fit": None,
@@ -76,7 +75,7 @@ models = {
         "fit": {
             "nets": 15,
             "epochs": 45,
-            "plot": False
+            "plot": False,
         },
         "predict": {
 
@@ -87,8 +86,8 @@ models = {
         "fit": None,
         "predict": {
             "threads_n": 8,
-            "k_value": 10
-        },
+	    "k_value": 10,
+	},
         "enabled": True,
     },
 }
