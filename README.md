@@ -1,52 +1,37 @@
 # TDADS
-TODO: description
-
 
 ## Requirements
+To install this project's dependencies, run `pip install -r requirements.txt`
 
 ## Usage
 
-## K-Nearest Neighbours
+### Running Code
 
-usage for K-Nearest_Neighbours without parallel processing:
-'python K-Nearest-Neighbours.py'
+To run the code as-is, run `python main.py` from the main folder.
 
-usage for K-Nearest_Neighbours with parallel processing:
-'python K-Nearest-Neighbours_Parallel.py'
+### Interpreting Results
 
-Parameters that must be tweaked:
-* test_images: x*28*28 numpy multidimensional array with entries between values inc. 0 and 255. In other words, x images that are sized 28x28 (provided in code x = 10,000 but x can be anything)
-* test_labels: an x sized numpy single dimensional array that contains integer digits between values inc. 0 and 9. Please keep x consistent between test_labels and test_images, there is no validation in the code.
-* (for Parallel processing only) THREADS_N- the number of concurrent threads you want to run on your machine (provided in code is 16)
+Results of models are saved to `results.json`, which stores the confusion matrix, accuracy, training and prediction times (in seconds) for each model.
 
-Hyperparameters that you may want to tweak:
-* K_VALUE- the value of K in K Nearest Neighbours (default is 10 and seems to be fine with the test set)
+## Configuration
 
-Outputs after every THREADS_N images predicted:
-* Number of images predicted
-* Current accuracy
-* Estimated time for completion from now
+Configuration is provided by `config.py`, in a dictionary format, generally:
 
-Outputs after all images predicted:
-* Number of images predicted
-* Total accuracy
-* The total time it took for completion
+```
+models = {
+	"model_name": {
+		"fit": {
+			[fit parameters as dict, if applicable]
+		},
+		"predict": {
+			[predict parameters as dict, if applicable]
+		},
+		"enabled": [True/False]
+	},
+	...
+}
+```
 
+To skip a model, simply add `"enabled": False` to its config dictionary.
 
-Note: When running these scripts, you may see warnings or errors but just ignore them since the code still runs in the background and there are prints to update its progression (approx. every 1-2 minutes if THREADS_N = 16).
-
-
-## Recurrent Neural Network
-
-usage for Recurrent Neural Network:
-'python Recurrent-Neural-Network.py'
-
-Parameters that must be tweaked:
-* test_images: x*28*28 numpy multidimensional array with entries between values inc. 0 and 255. In other words, x images that are sized 28x28 (provided in code x = 10,000 but x can be anything)
-* test_labels: an x sized numpy single dimensional array that contains integer digits between values inc. 0 and 9. Please keep x consistent between test_labels and test_images, there is no validation in the code.
-
-Outputs:
-* Total accuracy
-* The loss
-* The total time it took to train
-* The total time it took to predict
+Check the default config, config.py.default, for examples of possible parameters.
