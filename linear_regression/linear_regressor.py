@@ -11,10 +11,10 @@ class LinearRegressor:
     self.input_size = 784
 
   def run_model(self, train_images, train_labels):
-    
+
     #reshape and normalize the data
-    train_images = train_images.reshape(60000, self.input_size)  
-    train_images = train_images.astype('float32')      
+    train_images = train_images.reshape(60000, self.input_size)
+    train_images = train_images.astype('float32')
     train_images /= 255
     self.model = LinearRegression()
     self.model.fit(train_images, train_labels)
@@ -22,13 +22,13 @@ class LinearRegressor:
 
 
   def predict_model(self, test_images):
-    
+
       #reshape and normalize the data
       test_images = test_images.reshape(10000, self.input_size)
       test_images = test_images.astype('float32')
       test_images /= 255
-        
-      predictions = self.model.predict(test_images) 
+
+      predictions = self.model.predict(test_images)
 
       return predictions.astype(np.int)
 
@@ -60,7 +60,8 @@ def fit(x_train, y_train):
 def predict(images, reg):
 
     regressor = reg[0]
-    return regressor.predict_model(images)
+    predictions = regressor.predict_model(images)
+    return np.clip(predictions, 0, 9)
 """
 UNCOMMENT TO RUN WITHIN FILE
 
@@ -68,4 +69,6 @@ UNCOMMENT TO RUN WITHIN FILE
 reg = fit(train_images, train_labels)
 predictions = predict(test_images, reg)
 print(predictions)
+print(predictions.shape)
+print(predictions.min(), predictions.max())
 """
