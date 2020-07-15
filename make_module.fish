@@ -1,5 +1,7 @@
 #!/usr/bin/fish
 
+# This fish script is for making modules importable by main.py - it can be safely ignored.
+
 if ! test $argv[1] || ! test $argv[2]
 	echo -e "Please include a folder to make a module!\n\tUsage:\t" (status -f) " module_folder filename\n\te.g. " (status -f) " cnn main"
 	exit 1
