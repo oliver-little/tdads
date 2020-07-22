@@ -3,6 +3,8 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 import spacy
 import pandas as pd
+import string
+import re
 
 import emo_unicode
 
@@ -48,6 +50,23 @@ def remove_airline_tags(tweets):
         ret_texts.append(" ".join(ret_text))
     return pd.Series(ret_texts)
 
+def remove_links(tweet_texts):
+    """ Removes URLs in all provided tweets
+
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = remove_links(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        ret_texts.append(re.sub(r"http\S+", "", tweet))
+    return ret_texts
+            
 
 def translate_emoji(tweet):
     """ Translate emoji to :text: in single tweet
@@ -149,6 +168,23 @@ def lemmatize_texts(tweet_texts):
         ret_texts.append(" ".join([token.lemma_ for token in doc]))
     return ret_texts
 
+def remove_punctuation(tweet_texts):
+    """ Strips all punctuation in all provided tweets.
+
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = remove_punctuation(tweets.text)
+    """
+    ret_texts = []
+    table = str.maketrans("", "", string.punctuation)
+    for tweet in tweet_texts:
+        ret_texts.append(tweet.translate(table))
+    return ret_texts
 
 def pd_read(filename, lower = True):
     """ Read tweets from filename
@@ -171,10 +207,11 @@ if __name__ == '__main__':
     # nltk.download("stopwords")
     # nltk.download("wordnet")
     # nltk.download("punkt")
+    texts = ["Nice RT @VirginAmerica: Vibe with the moodlight from takeoff to touchdown. #MoodlitMonday #ScienceBehindTheExperience http://t.co/Y7O0uNxTQP"]
 
-    tweets = pd_read("tweets.csv")
+    #tweets = pd_read("tweets.csv")
     print("opened")
     # tweets.text = stem_texts(tweets.text)
-    # print(tweets.text)
-    tweets.text = lemmatize_texts(tweets.text)
-    print(tweets.text)
+    #print(tweets.text)
+    print(lemmatize_texts(texts))
+    print(lemmatize_texts(remove_punctuation(remove_links(texts))))
