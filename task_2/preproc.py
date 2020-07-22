@@ -66,8 +66,31 @@ def remove_links(tweet_texts):
     for tweet in tweet_texts:
         ret_texts.append(re.sub(r"http\S+", "", tweet))
     return ret_texts
-            
 
+def hashtag_to_words(tweet_texts):
+    """ Converts hashtags with TitleCase to normal words (e.g: #ThisIsAHashtag to This is a Hashtag)
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = remove_links(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        ret_text = []
+        for word in str(tweet).split():
+            if word.startswith("#"):
+                word = word[1:]
+                word = re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1', word)).split()
+                ret_text.extend(word)
+            else:
+                ret_text.append(word)                
+        ret_texts.append(" ".join(ret_text))
+    return ret_texts
+        
 def translate_emoji(tweet):
     """ Translate emoji to :text: in single tweet
 
@@ -207,11 +230,9 @@ if __name__ == '__main__':
     # nltk.download("stopwords")
     # nltk.download("wordnet")
     # nltk.download("punkt")
-    texts = ["Nice RT @VirginAmerica: Vibe with the moodlight from takeoff to touchdown. #MoodlitMonday #ScienceBehindTheExperience http://t.co/Y7O0uNxTQP"]
 
-    #tweets = pd_read("tweets.csv")
+    tweets = pd_read("tweets.csv")
     print("opened")
     # tweets.text = stem_texts(tweets.text)
-    #print(tweets.text)
-    print(lemmatize_texts(texts))
-    print(lemmatize_texts(remove_punctuation(remove_links(texts))))
+    tweets.text = lemmatize_texts(tweets.text)
+    print(tweets.text)
