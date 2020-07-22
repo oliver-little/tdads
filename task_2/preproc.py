@@ -10,6 +10,7 @@ import emo_unicode
 
 pd.set_option('display.max_colwidth', None)
 
+lemmatizer = WordNetLemmatizer()
 
 stop_words = stopwords.words("english")
 
@@ -64,7 +65,7 @@ def remove_links(tweet_texts):
     """
     ret_texts = []
     for tweet in tweet_texts:
-        ret_texts.append(re.sub(r"http\S+", "", tweet))
+        ret_texts.append(re.sub(r"http\S+", "", str(tweet)))
     return ret_texts
 
 def hashtag_to_words(tweet_texts):
@@ -121,7 +122,7 @@ def translate_all_emoji(tweets):
     Usage:
         tweets.text = translate_all_emoji(tweets.text)
     """
-    tweets.texts = tweets.texts.apply(lambda t: translate_emoji(str(t)))
+    tweets.text = tweets.text.apply(lambda t: translate_emoji(str(t)))
     return tweets
 
 
@@ -183,12 +184,13 @@ def lemmatize_texts(tweet_texts):
     Usage:
         tweets.text = lemmatize_texts(tweets.text)
     """
-    lemmatizer = WordNetLemmatizer()
     ret_texts = []
-    for tweet in tweet_texts:
-        nlp = spacy.load("en", disable=['parser', 'ner'])
-        doc = nlp(tweet)
-        ret_texts.append(" ".join([token.lemma_ for token in doc]))
+    nlp = spacy.load("en", disable=['parser', 'ner'])
+    count = 1
+    for tweet in nlp.pipe(tweet_texts):
+        ret_texts.append(" ".join([token.lemma_ for token in tweet]))
+        print("Lemmatized: " + str(count))
+        count += 1
     return ret_texts
 
 def remove_punctuation(tweet_texts):
