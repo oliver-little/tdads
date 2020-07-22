@@ -107,8 +107,8 @@ def with_without_conversion(tweet_texts):
     """
     ret_texts = []
     for tweet in tweet_texts:
-        tweet.replace("w/out", "without")
-        tweet.replace("w/", "with")
+        tweet = tweet.replace("w/out", "without")
+        tweet = tweet.replace("w/", "with")
         ret_texts.append(tweet)
     return ret_texts
 
@@ -125,8 +125,8 @@ def arrow_conversion(tweet_texts):
     """
     ret_texts = []
     for tweet in tweet_texts:
-        tweet.replace("-&gt;", " to ")
-        tweet.replace("&gt;", " to ")
+        tweet = tweet.replace("-&gt;", " to ")
+        tweet = tweet.replace("&gt;", " to ")
         ret_texts.append(tweet)
     return ret_texts
 
@@ -143,7 +143,7 @@ def ampersand_conversion(tweet_texts):
     """
     ret_texts = []
     for tweet in tweet_texts:
-        tweet.replace("&amp;", " and ")
+        tweet = tweet.replace("&amp;", " and ")
         ret_texts.append(tweet)
     return ret_texts
 
@@ -160,8 +160,8 @@ def lt_gt_conversion(tweet_texts):
     """
     ret_texts = []
     for tweet in tweet_texts:
-        tweet.replace("&lt;", " less than ")
-        tweet.replace("&gt;", " greater than ")
+        tweet = tweet.replace("&lt;", " less than ")
+        tweet = tweet.replace("&gt;", " greater than ")
         ret_texts.append(tweet)
     return ret_texts
         
@@ -281,6 +281,36 @@ def remove_punctuation(tweet_texts):
         ret_texts.append(tweet.translate(table))
     return ret_texts
 
+def remove_contractions(tweet_texts):
+    """ Replaces most contractions (e.g: can't, you'd, won't) with their uncontracted form.
+
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = remove_contractions(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        # specific
+        tweet = re.sub(r"won\'t", "will not", tweet)
+        tweet = re.sub(r"can\'t", "can not", tweet)
+
+        # general
+        tweet = re.sub(r"n\'t", " not", tweet)
+        tweet = re.sub(r"\'re", " are", tweet)
+        tweet = re.sub(r"\'s", " is", tweet)
+        tweet = re.sub(r"\'d", " would", tweet)
+        tweet = re.sub(r"\'ll", " will", tweet)
+        tweet = re.sub(r"\'t", " not", tweet)
+        tweet = re.sub(r"\'ve", " have", tweet)
+        tweet = re.sub(r"\'m", " am", tweet)
+        ret_texts.append(tweet)
+    return ret_texts
+
 def pd_read(filename, lower = True):
     """ Read tweets from filename
 
@@ -302,9 +332,10 @@ if __name__ == '__main__':
     # nltk.download("stopwords")
     # nltk.download("wordnet")
     # nltk.download("punkt")
-
+    
     tweets = pd_read("tweets.csv")
     print("opened")
     # tweets.text = stem_texts(tweets.text)
     tweets.text = lemmatize_texts(tweets.text)
     print(tweets.text)
+    
