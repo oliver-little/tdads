@@ -1,6 +1,7 @@
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer, WordNetLemmatizer
+from copy import deepcopy
 import spacy
 import pandas as pd
 import string
@@ -37,6 +38,7 @@ def remove_airline_tags(tweets):
         tweets.text = remove_airline_tags(tweets)
     """
     ret_texts = []
+    tweets = deepcopy(tweets)
     for index, tweet in tweets.iterrows():
         ret_text = []
         for word in tweet.text.split():
@@ -48,8 +50,8 @@ def remove_airline_tags(tweets):
                 ret_text.append("@USER")
             else:
                 ret_text.append(word)
-        ret_texts.append(" ".join(ret_text))
-    return pd.Series(ret_texts)
+        tweets.loc[index, "text"] = " ".join(ret_text)
+    return tweets
 
 def remove_links(tweet_texts):
     """ Removes URLs in all provided tweets
