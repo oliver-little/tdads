@@ -12,15 +12,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def DShowImage(in_image):
-    """Uses pyplot to display an image, which is assumed to be greyscale"""    
-    img = in_image.copy()
-    img[img>0.1] = 1.0              #Convert to black and white
-    img[img<1.0] = 0.0              #Convert to black and white   
-    plt.figure()
-    plt.imshow(img,cmap=plt.cm.binary)
-    plt.show()
-
 def FindLoop(img,lines,scanstart,scanend,pixstart,pixend,vertical):
     """Looks for a 'loop' in either vertical or horizontal plane.
     
