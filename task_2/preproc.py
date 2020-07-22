@@ -91,6 +91,77 @@ def hashtag_to_words(tweet_texts):
                 ret_text.append(word)                
         ret_texts.append(" ".join(ret_text))
     return ret_texts
+
+def with_without_conversion(tweet_texts):
+    """ Converts "w"/ to "with" and "w/out" to "without"
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = with_without_conversion(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        tweet.replace("w/out", "without")
+        tweet.replace("w/", "with")
+        ret_texts.append(tweet)
+    return ret_texts
+
+def arrow_conversion(tweet_texts):
+    """ Converts &gt; (>) or -&gt; (->) into "to"
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = arrow_conversion(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        tweet.replace("-&gt;", " to ")
+        tweet.replace("&gt;", " to ")
+        ret_texts.append(tweet)
+    return ret_texts
+
+def ampersand_conversion(tweet_texts):
+    """ Converts & (represented as (&amp;) into "and"
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = ampersand_conversion(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        tweet.replace("&amp;", " and ")
+        ret_texts.append(tweet)
+    return ret_texts
+
+def lt_gt_conversion(tweet_texts):
+    """ Converts < (represented as &lt;) and > (represented as &gt;) into "less than" and "greater than"
+    Parameters:
+        texts (pandas.Series)
+
+    Returns
+        texts (pandas.Series)
+
+    Usage:
+        tweets.text = lt_gt_conversion(tweets.text)
+    """
+    ret_texts = []
+    for tweet in tweet_texts:
+        tweet.replace("&lt;", " less than ")
+        tweet.replace("&gt;", " greater than ")
+        ret_texts.append(tweet)
+    return ret_texts
         
 def translate_emoji(tweet):
     """ Translate emoji to :text: in single tweet
@@ -186,11 +257,8 @@ def lemmatize_texts(tweet_texts):
     """
     ret_texts = []
     nlp = spacy.load("en", disable=['parser', 'ner'])
-    count = 1
     for tweet in nlp.pipe(tweet_texts):
         ret_texts.append(" ".join([token.lemma_ for token in tweet]))
-        print("Lemmatized: " + str(count))
-        count += 1
     return ret_texts
 
 def remove_punctuation(tweet_texts):
