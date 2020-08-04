@@ -1,0 +1,6 @@
+0 - cancelled flight
+1 - reservations/customer service (very unclear)
+2 - phone/customer service
+3 - mostly delayed flight
+4 - employee/rep complaints
+5 - misc customer service complaints

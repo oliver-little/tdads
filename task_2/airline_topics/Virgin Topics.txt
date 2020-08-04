@@ -1,0 +1,4 @@
+0 - cancelled flights
+1 - delayed flights/baggage issues
+2 - website issues
+3 - misc customer service issues

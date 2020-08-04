@@ -1,0 +1,7 @@
+0 - cancelled/delayed flights, also customer service complaints
+1 - customer service/baggage issues
+2 - customer service/employees
+3 - customer service/phone issues
+
+(tried this with a couple of different values for num_topics
+but couldn't get anything that seemed to separate the topics particularly well)

@@ -1,0 +1,5 @@
+0 - customer service (inc long phone lines, and bad inflight wifi)
+1 - misc complaints (some delayed/cancelled flights)
+2 - cancelled flights
+3 - delayed flights/general customer service
+4 - delayed flights/baggage
