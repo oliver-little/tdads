@@ -4,11 +4,12 @@ import numpy as np
 from tkinter import messagebox
 from tkinter import simpledialog
 
-## USAGE: Set INPUT_FILE to the file to annotate, then run this file as the main module
+# USAGE: Set INPUT_FILE to the file to annotate, then run this file as the main module
 
-INPUT_FILE = ""
+INPUT_FILE = "extra_data/royalcaribbean.csv"
 
-pd.options.mode.chained_assignment = None 
+pd.options.mode.chained_assignment = None
+
 
 class InputWindow(tk.Frame):
     def __init__(self, parent, input_f):
@@ -18,12 +19,13 @@ class InputWindow(tk.Frame):
         self.tweets = pd.read_csv(input_f)
 
         parent.withdraw()
-        output_append = simpledialog.askstring(title="Output Filename", prompt="Input the text to append to the output filename (close to save over input file):")
+        output_append = simpledialog.askstring(
+            title="Output Filename", prompt="Input the text to append to the output filename (close to save over input file):")
         if output_append != None:
             self.outputFilename = input_f[:-4] + "_" + output_append + ".csv"
         else:
             self.outputFilename = input_f
-        
+
         if "tweet_sentiment" not in self.tweets:
             self.position = 0
             self.tweets["tweet_sentiment"] = ""
@@ -34,30 +36,34 @@ class InputWindow(tk.Frame):
                     self.position = index
                     foundRow = True
                     break
-                
+
             if not foundRow:
-                messagebox.showinfo(message="All tweets already have a sentiment value.")
+                messagebox.showinfo(
+                    message="All tweets already have a sentiment value.")
                 self.parent.destroy()
                 return
 
         parent.deiconify()
-        
-        self.text = tk.Label(parent, text=self.tweets["text"][self.position], font=(None, 20), wraplength=500)
+
+        self.text = tk.Label(parent, text=self.tweets["text"][self.position], font=(
+            None, 20), wraplength=500)
         self.text.grid(row=1, column=1, pady=20)
-        self.positive=tk.Button(parent, text="Positive", height=10, width=20, command=self.positiveSelected)
+        self.positive = tk.Button(
+            parent, text="Positive", height=10, width=20, command=self.positiveSelected)
         self.positive.grid(row=0, column=0, padx=10)
         parent.bind("1", self.keyPositiveSelected)
-        self.neutral=tk.Button(parent, text="Neutral", height=10, width=20, command=self.neutralSelected)
+        self.neutral = tk.Button(
+            parent, text="Neutral", height=10, width=20, command=self.neutralSelected)
         self.neutral.grid(row=0, column=1, padx=10)
         parent.bind("2", self.keyNeutralSelected)
-        self.negative=tk.Button(parent, text="Negative", height=10, width=20, command=self.negativeSelected)
+        self.negative = tk.Button(
+            parent, text="Negative", height=10, width=20, command=self.negativeSelected)
         self.negative.grid(row=0, column=2, padx=10)
         parent.bind("3", self.keyNegativeSelected)
 
-
     def keyPositiveSelected(self, event):
         self.positiveSelected()
-        
+
     def positiveSelected(self):
         col = self.tweets["tweet_sentiment"]
         col.iloc[self.position] = "positive"
@@ -94,7 +100,7 @@ class InputWindow(tk.Frame):
 
     def saveTweets(self):
         self.tweets.to_csv(self.outputFilename)
-        
+
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -102,8 +108,3 @@ if __name__ == "__main__":
     root.deiconify()
     window = InputWindow(root, INPUT_FILE)
     root.mainloop()
-
-
-
-
-
