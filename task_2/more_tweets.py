@@ -1,9 +1,9 @@
 import pandas as pd
 import GetOldTweets3 as got
 
-tweetcriteria = got.manager.TweetCriteria().setQuerySearch("to:CruiseNorwegian")\
-                                           .setSince("2015-02-01")\
-                                           .setUntil("2015-02-10")\
+tweetcriteria = got.manager.TweetCriteria().setQuerySearch("to:jet2tweets")\
+                                           .setSince("2015-03-01")\
+                                           .setUntil("2015-04-01")\
 
 tweets = got.manager.TweetManager.getTweets(tweetcriteria)
 tweets_list = []
@@ -21,4 +21,4 @@ for tweet in tweets:
 tweets_df = pd.DataFrame(tweets_list)
 print(tweets_df)
 # tweets_df.columns = ["tweet_id", "permalink", "name", "text", "tweet_created", "retweet_count", "favourites_count"]
-tweets_df.to_csv("extra_data/cruisenorwegian.csv", index=False)
+tweets_df.to_csv("extra_data/jet2new.csv", index=False)
