@@ -1,0 +1,5 @@
+0 - misc complaints (some delayed/cancelled flights)
+1 - delays
+2 - more delayed/cancelled flights
+3 - baggage issues
+4 - customer service - particularly app/website
