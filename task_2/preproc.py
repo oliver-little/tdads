@@ -127,6 +127,8 @@ def arrow_conversion(tweet_texts):
     for tweet in tweet_texts:
         tweet = tweet.replace("-&gt;", " to ")
         tweet = tweet.replace("&gt;", " to ")
+        for word in str(tweet).split():
+            word = re.sub("([A-Z]{3})-([A-Z]{3})", r"\1 \2", word)
         ret_texts.append(tweet)
     return ret_texts
 
