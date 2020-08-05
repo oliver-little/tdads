@@ -23,9 +23,13 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
-test_vectors = np.load("TweetVectors.npy")
+base_filename = "extra_data\jet2new_Combined"
+vecfile = base_filename + "Vectors.npy"
+labelsfile = base_filename + "_true_sentiment.txt"
 
-f = open("true_sentiment.txt","r")
+test_vectors = np.load(vecfile)
+
+f = open(labelsfile,"r")
 labels = []
 for x in f:
     x = x[:-1]
@@ -50,9 +54,11 @@ model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-model.fit(test_vectors[:10000], test_labels[:10000], epochs=10)
+testnum = int(len(labels) * 3 / 4)
+print("Using ",testnum,"for training")
+model.fit(test_vectors[:testnum], test_labels[:testnum], epochs=10)
 
-test_loss, test_acc = model.evaluate(test_vectors[10000:], test_labels[10000:], verbose=2)
+test_loss, test_acc = model.evaluate(test_vectors[testnum:], test_labels[testnum:], verbose=2)
 
 print('\nTest accuracy:', test_acc)
 
