@@ -70,6 +70,6 @@ if __name__ == "__main__":
             tweets["locations_from_text"] = col
 
     tweets = tweets.dropna(subset=["locations_from_text"])
-    tweets.to_csv("tweets_with_locations.csv", index_col=False)       
+    tweets.to_csv("tweets_with_locations.csv", index_label=False)       
     
 
