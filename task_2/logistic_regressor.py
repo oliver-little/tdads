@@ -22,11 +22,7 @@ for x in tweets.text:
     vector = encoder.convert_tweet(x)
     tweet_vectors.append(vector)
 
-"""
 
-NEED TO CONVERT THE WORDS IN THE COLUMN TO numbers
-
-"""
 
 labels = []
 
@@ -38,23 +34,12 @@ for i in tweets.airline_sentiment:
     else:
         labels.append(2)
 
-"""
-
-NEED TO IMPLEMENT
------------------
-= Reimplement the categories for 3 Categories
-= Hope that fits into tensorflow
-
-"""
 
 tweet_vectors = np.asarray(tweet_vectors).astype(np.float32)
 
 airline_sentiment_labels = np.asarray(labels).astype(np.float32)[:14216]
-#airline_sentiment_labels.reshape(10000)
-#airline_sentiment_labels = pd.DataFrame(tweets.airline_sentiment)
+
 print("Vectors created :)")
-#regressor needs rewriting for the new size of datasets
-#especially run model
 
 test_data = random.randint(0,11000)
 reg = fit(tweet_vectors, airline_sentiment_labels, encoder.max_tweet_length, 3)
