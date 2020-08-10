@@ -20,15 +20,16 @@ def preprocess(tweets):
     Y = tweets["airline_sentiment"].astype("category").cat
     return X, Y.codes, Y.categories
 
-def fit(x_train, x_test):
+def fit(x_train, y_train):
     text_clf = Pipeline([
         ("tfidf", TfidfVectorizer(use_idf=True, smooth_idf=True)),
         ("clf", BernoulliNB())])
-    
     text_clf.fit(x_train, y_train)
+    print(len(text_clf["tfidf"].get_feature_names()))
+    print(len(text_clf["tfidf"].transform(x_train).todense()[0]))
     return [text_clf]
 
-def predict(y_train, fit_return_list):
+def predict(x_test, fit_return_list):
     text_clf = fit_return_list[0]
     predicted = text_clf.predict(x_test)
     return predicted
@@ -36,10 +37,9 @@ def predict(y_train, fit_return_list):
 if __name__ == "__main__":
     X, Y, Y_categories = preprocess(pd_read("tweets.csv"))
     # Split dataset
-    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
-    
-    fit_return_list = fit(x_train, x_test)
-    predicted = predict(y_train, fit_return_list)
+    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=10)
+    fit_return_list = fit(x_train, y_train)
+    predicted = predict(x_test, fit_return_list)
     
     print("Accuracy: " + str(np.mean(predicted == y_test)))
 
