@@ -12,7 +12,7 @@ for sentiment, sentiment_tweets in sentiment_dict.items():
         # Hacky solution because of the way the locations were saved (as a list of dicts, but in the csv as a string)
         # Therefore, eval them to get the dict out (using this module makes it safer) then iterate over the list, and iterate over the dict
         locations = ast.literal_eval(locationString)
-        # Set used to remove the effect of the same location being recognised more than once.
+        # Set used to remove the effect of the same location being recognised more than once in the same tweet.
         thisTweet = set()
         for locationDict in locations:
             for key, location in locationDict.items():
@@ -25,12 +25,19 @@ for sentiment, sentiment_tweets in sentiment_dict.items():
 
 commonKeys = sentimentCounts["positive"].keys() & sentimentCounts["negative"].keys() & sentimentCounts["neutral"].keys()
 
-negativePercentages = {}
+totalsList = []
 
 for key in commonKeys:
     total = sentimentCounts["negative"][key] + sentimentCounts["positive"][key] + sentimentCounts["neutral"][key]
     if total > 20:
-        negativePercentages[key] = sentimentCounts["negative"][key] / total
-        print(key + " " + str(negativePercentages[key]))
+        totalsList.append([key, sentimentCounts["positive"][key], sentimentCounts["neutral"][key], sentimentCounts["negative"][key], total])
+
+df = pd.DataFrame(data=totalsList, columns=["key", "positive", "neutral", "negative", "total"])
+df.to_csv("locations_totals.csv", index=False, index_label=False)
+
+                
+        
+
+
 
 
