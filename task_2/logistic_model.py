@@ -11,6 +11,7 @@ class LogisticRegressor():
 
         self.input_size = input
         self.output_size = output
+        self.weights = []
 
     def load_model(self):
 
@@ -21,26 +22,46 @@ class LogisticRegressor():
 
         train_labels = np_utils.to_categorical(train_labels, self.output_size)
 
-        epochs = 30
-        batch_size = 128
+        epochs = 3
+        batch_size = 16
 
-
-        self.model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate = 0.01), loss='categorical_crossentropy', metrics=['accuracy'])
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate = 0.01), loss='categorical_crossentropy', metrics=['accuracy'])
         history = self.model.fit(train_images, train_labels ,
                             batch_size=batch_size, epochs=epochs,
                             verbose=1)
+
+        self.weights  = self.model.get_weights()
 
     def predict_model(self, test_images):
 
         predictions = self.model.predict(test_images)
         return predictions.argmax(axis=1)
 
+    def generate_vectors(self):
+
+        with open("vectors_file.txt", 'w+') as file:
+            tt = 0
+            for x in tweets.text:
+                vector = encoder.create_tweet_vector(x)
+                vector = str(vector)
+                vector.replace('[','')
+                vector.replace(']','')
+                file.write("%s\n" % vector)
+
+                if tt % 100 == 0:
+                    print('another 100')
+                    print(int(tt / 100))
+                tt += 1
+
+            print('Write succesful!')
+
+
 def fit(x_train, y_train, input, output):
     regressor = LogisticRegressor(input, output)
     regressor.load_model()
     regressor.run_model(train_images=x_train, train_labels=y_train)
 
-    return [regressor]
+    return [regressor], regressor.weights
 
 def predict(images, reg):
 
@@ -49,15 +70,27 @@ def predict(images, reg):
 
 def evaluate(predictions, labels):
 
+                    #Positive Negative Neutral
+                    #[Correct, incorrect]
+    correct_labels = [[0,0],[0,0],[0,0]]
+
     index = 0
     correct = 0
 
     for i in predictions:
-        if i == labels[index]:
+        #if its correct
+        if i == int(labels[index]):
             correct += 1
+
+
+            correct_labels[int(labels[index])][0] += 1
+        #incorrect
+        else:
+            correct_labels[int(labels[index])][1] += 1
+
         index += 1
 
-    return correct / index
+    return correct / index, correct_labels
 """
 UNCOMMENT TO RUN WITHIN FILE
 

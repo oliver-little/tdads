@@ -8,6 +8,9 @@ class Encoder:
         self.word_dictionary = {}
         self.tweets = file
 
+    def get_dict_length(self):
+        return len(self.word_dictionary)
+
     def find_max_tweet(self):
         current_max = 0
         for row in self.tweets.text:
@@ -17,6 +20,7 @@ class Encoder:
                 current_max = len(words)
 
         self.max_tweet_length = current_max
+
 
     def dict_contains(self, word):
 
@@ -40,7 +44,8 @@ class Encoder:
         for i in self.word_dictionary:
             if self.word_dictionary[i] == word:
                 return i
-        return -1;
+        return -1
+
 
     def convert_tweet(self, tweet):
 
@@ -53,5 +58,16 @@ class Encoder:
         for word in words:
             tweet_vector[index] = self.find_key(word)
             index += 1
+
+        return tweet_vector
+
+    def create_tweet_vector(self, tweet):
+        tweet_vector = []
+        index = 0
+        for i in range(self.get_dict_length()):
+            tweet_vector.append(0)
+
+        for word in tweet:
+            tweet_vector[self.find_key(word)] = 1
 
         return tweet_vector
