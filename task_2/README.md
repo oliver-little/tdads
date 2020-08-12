@@ -14,11 +14,11 @@ To test the RNN, with an already trained model "sentiment_analysis_model.h5", on
 python RNN_other_datasets.py [sentiment_analysis_model.h5]
 ```
 
-## Requirements
+## Requirement
 
 ```tweets_for_RNN.csv```: A file containing all of the tweets (the extension tweets scraped from Twitter on top of those supplied by Will).
 
-## Outputs
+## Output
 
 ```sentiment_analysis_model_temp.h5```: If the already trained model is not supplied to any script, the program will train a new model (\~30 minutes) and save it in this file in the same directory.
 
