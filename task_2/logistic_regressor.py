@@ -12,7 +12,7 @@ import os
 """
 TWEETS FILE TO BE USED
 """
-tweet_file = "preprocessed_tweets.csv"
+tweet_file = str(input("Enter file name of tweets e.g. preprocessed_tweets.csv: "))
 
 #read the csv
 tweets = pd.read_csv(tweet_file)

@@ -13,7 +13,7 @@ class Encoder:
     def find_max_tweet(self):
         current_max = 0
         for row in self.tweets.text:
-            words = row.split(' '
+            words = row.split(' ')
             if len(words) > current_max:
                 current_max = len(words)
         self.max_tweet_length = current_max
