@@ -34,15 +34,15 @@ def get_pos_neg(column):
 
 def graph_maker(x_label, bar_names, pos_values, neg_values):
 
+  x_pos = [i for i, _ in enumerate(bar_names)]
+  plt.bar(x_pos, pos_values, width=0.2, color='green')
+
   x_pos = [i for i,_ in enumerate(bar_names)]
   plt.bar(x_pos, neg_values, width=0.2, color='red')
   
-  x_pos = [i+0.2 for i,_ in enumerate(bar_names)]
-  plt.bar(x_pos, pos_values, width=0.2, color='green')
-  
-  plt.xlabel(x_label)
-  plt.ylabel("Count")
-  plt.xticks(x_pos, bar_names, rotation=15)
+  plt.xlabel("Timezones")
+  plt.ylabel("Counts")
+  plt.xticks(x_pos, bar_names, rotation=0)
 
   colors = {'Negative':'red', 'Positive':'green'}         
   labels = list(colors.keys())
@@ -50,6 +50,23 @@ def graph_maker(x_label, bar_names, pos_values, neg_values):
   plt.legend(handles, labels)
 
   plt.show()
+
+
+def get_proportions(pos_values, neg_values, min_tweets):
+
+  pos_percents = []
+  neg_percents = []
+
+  for pos, neg in zip(pos_values, neg_values):
+    total = int(pos) + int(neg)
+    if total > min_tweets:
+      pos_percents.append(int(pos/total*100))
+      neg_percents.append(int(neg/total*100))
+
+  final_list = [[x,y] for x,y in zip(pos_percents, neg_percents)]
+
+  return final_list
+
 
 
 """
@@ -62,13 +79,13 @@ selection: Three types either:
           - Combined: Take the n most tweeted results
 """
 
-
 def shorten_values(categories, values, new_len, selection):
 
   temp_list = values
   temp_names = categories
   final_list_names = []
   final_list_values = []
+
 
   if selection == "best":
     while len(final_list_names) != new_len:
@@ -83,8 +100,9 @@ def shorten_values(categories, values, new_len, selection):
 
       highest = temp_list.pop(index)
       highest_name = temp_names.pop(index)
-      final_list_names.append(highest_name)
-      final_list_values.append(highest)
+      if str(highest_name) != "nan":
+        final_list_names.append(highest_name)
+        final_list_values.append(highest)
 
 
   if selection == "worst":
@@ -100,8 +118,10 @@ def shorten_values(categories, values, new_len, selection):
 
       highest = temp_list.pop(index)
       highest_name = temp_names.pop(index)
-      final_list_names.append(highest_name)
-      final_list_values.append(highest)
+
+      if str(highest_name) != 'nan':
+        final_list_names.append(highest_name)
+        final_list_values.append(highest)
 
   if selection == "combined":
     while len(final_list_names) != new_len:
@@ -116,28 +136,55 @@ def shorten_values(categories, values, new_len, selection):
 
       highest = temp_list.pop(index)
       highest_name = temp_names.pop(index)
-      final_list_names.append(highest_name)
-      final_list_values.append(highest)
+      if str(highest_name) != "nan":
+        final_list_names.append(highest_name)
+        final_list_values.append(highest)
 
   return final_list_names, final_list_values
 
-
-
+"""
+=========
+VARIABLES
+=========
+"""
+#negative_reason, airline, name, retweet_count, tweet_created, tweet_location, user_timezone
 column = "user_timezone"
-type_of_short = "best"
+type_of_short = "worst"
 amount_of_bars = 5
+min_tweets = 10
 
+
+"""
+============
+COUNT GRAPHS
+============
+"""
 counts = get_pos_neg(column)
-
 shortened_counts = shorten_values(counts[0], counts[1], amount_of_bars, type_of_short)
 names = shortened_counts[0]
 values = shortened_counts[1]
 
-"""
-names = counts[0]
-values = counts[1]
-"""
 # get the number of positives and negatives for the bar chart
 pos_val = [x[0] for x in values]
 neg_val = [x[1] for x in values]
+
+graph_maker(column, names, pos_val, neg_val)
+"""
+===================
+PROPORTIONAL GRAPHS
+===================
+"""
+counts = get_pos_neg(column)
+values = counts[1]
+
+pos_val = [x[0] for x in values]
+neg_val = [x[1] for x in values]
+proportions = get_proportions(pos_val, neg_val, min_tweets)
+shortened_counts = shorten_values(counts[0], proportions, amount_of_bars, type_of_short)
+
+names = shortened_counts[0]
+values = shortened_counts[1]
+pos_val = [x[0]+x[1] for x in values]
+neg_val = [x[1] for x in values]
+
 graph_maker(column, names, pos_val, neg_val)
