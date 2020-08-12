@@ -24,7 +24,7 @@ python RNN_other_datasets.py [sentiment_analysis_model.h5]
 
 ## Troubleshooting
 
-```Can't find model 'en'```: Please run your console as Administrator and run:
+```Can't find model 'en'```: Please run your console with administrator privileges and run:
 
 ```bash
 python -m spacy download en
