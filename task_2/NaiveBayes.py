@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import BernoulliNB
 from preproc import *
+from time import time
 
 def preprocess(tweets):
     tweets = remove_airline_tags(tweets)
@@ -25,8 +26,6 @@ def fit(x_train, y_train):
         ("tfidf", TfidfVectorizer(use_idf=True, smooth_idf=True)),
         ("clf", BernoulliNB())])
     text_clf.fit(x_train, y_train)
-    print(len(text_clf["tfidf"].get_feature_names()))
-    print(len(text_clf["tfidf"].transform(x_train).todense()[0]))
     return [text_clf]
 
 def predict(x_test, fit_return_list):
@@ -38,8 +37,14 @@ if __name__ == "__main__":
     X, Y, Y_categories = preprocess(pd_read("tweets.csv"))
     # Split dataset
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=10)
+    startTime = time()
     fit_return_list = fit(x_train, y_train)
+    endTime = time()
+    print("Fitting time: " + str(endTime - startTime))
+    startTime = time()
     predicted = predict(x_test, fit_return_list)
+    endTime = time()
+    print("Prediction time: " + str(endTime - startTime))
     
     print("Accuracy: " + str(np.mean(predicted == y_test)))
 
