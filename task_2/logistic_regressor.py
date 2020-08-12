@@ -8,8 +8,14 @@ import random
 import csv
 import os
 
+
+"""
+TWEETS FILE TO BE USED
+"""
+tweet_file = "preprocessed_tweets.csv"
+
 #read the csv
-tweets = pd.read_csv("preprocessed_tweets.csv")
+tweets = pd.read_csv(tweet_file)
 tweets.drop_duplicates(subset='text', inplace=True)
 
 #randomise it
