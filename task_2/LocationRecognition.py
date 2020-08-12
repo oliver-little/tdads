@@ -9,7 +9,6 @@ AIRPORTS = pd.read_csv("airport-codes.csv")
 CITIES = pd.read_csv("world-cities.csv")
 
 # This only considers 3 letter Airport codes and cities with up to two words in the name
-# TODO: countries
 def getLocationsInTweet(tweet_text):
     splitText = tweet_text.split()
 
