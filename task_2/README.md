@@ -5,13 +5,13 @@
 To test the RNN, with an already trained model "sentiment_analysis_model.h5", on the airline data supplied by Will:
 
 ```bash
-python RNN.py \[sentiment_analysis_model.h5\]
+python RNN.py [sentiment_analysis_model.h5]
 ```
 
 To test the RNN, with an already trained model "sentiment_analysis_model.h5", on the extension airline data scraped from Twitter:
 
 ```bash
-python RNN_other_datasets.py \[sentiment_analysis_model.h5\]
+python RNN_other_datasets.py [sentiment_analysis_model.h5]
 ```
 
 ## Requirements
