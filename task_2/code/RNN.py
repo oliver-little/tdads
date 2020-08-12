@@ -72,7 +72,7 @@ if __name__ == "__main__":
     x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
 
     # Train the model
-    model = fit(X, Y)
+    model = fit(x_train, y_train)
 
     # Make predictions
     predictions = predict(x_test, model)

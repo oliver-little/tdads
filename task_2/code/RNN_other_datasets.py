@@ -68,7 +68,7 @@ def predict(x_test, model):
     return model.predict(x_test)   
 
 if __name__ == "__main__":
-    # Acquire texts containing sentiment and corresponding labels
+    # Acquire data
     df = pd.read_csv('tweets_for_RNN.csv')
 
     # Split the datasets into training and testing batches
