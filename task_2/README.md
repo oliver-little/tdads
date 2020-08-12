@@ -16,15 +16,15 @@ python RNN_other_datasets.py [sentiment_analysis_model.h5]
 
 ## Requirements
 
-- ```tweets_for_RNN.csv```: A file containing all of the tweets (the extension tweets scraped from Twitter on top of those supplied by Will).
+```tweets_for_RNN.csv```: A file containing all of the tweets (the extension tweets scraped from Twitter on top of those supplied by Will).
 
 ## Outputs
 
-- ```sentiment_analysis_model_temp.h5```: If the already trained models are not supplied to the scripts, the program will train a new model (\~30 minutes) and save it in this file in the same directory.
+```sentiment_analysis_model_temp.h5```: If the already trained model is not supplied to any script, the program will train a new model (\~30 minutes) and save it in this file in the same directory.
 
 ## Troubleshooting
 
-- ```Can't find model 'en'```: Please run your console as Administrator and run:
+```Can't find model 'en'```: Please run your console as Administrator and run:
 
 ```bash
 python -m spacy download en
