@@ -15,6 +15,8 @@ Once it has the file it will run much faster. The file is also too large to uplo
 ## Requirements
 
 - ```preprocessed_tweets.csv```: A file of the tweets preproccessed. Other files can be used but this one is uploaded on the github. It just needs to be a csv file of the same format as the original tweets.csv.
+- ```logistic_model.py```: Python file required for the program to run.
+- ```one_hot_encoder.py```: Python file required to vectorize the tweets.
 
 ## Outputs
 - ```results.csv```: A csv file of three columns. The words in the dictionary; the sentiment the model assigned to them; and the confidence it has in that assignment.
