@@ -1,4 +1,4 @@
 Requires python libraries:
-nump
+numpy
 pandas
 matplotlib
