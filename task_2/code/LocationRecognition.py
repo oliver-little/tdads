@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import ast
 import pickle
 import os
 from preproc import *
