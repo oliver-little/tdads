@@ -32,6 +32,10 @@ It will then ask you for the file name of the tweets to analyse.
 
 It will also ask you for the column name, how many bars to include, the way to sort them, and the minimum required tweets.
 
+## Requirements
+
+- ```tweets.csv```: A file of tweets for the program to analyse. 
+
 ## Outputs
 
 - This program outputs two matplotlib plots. One chart of the counts of the given constraints, and one of the same graph as proportions. 
