@@ -6,3 +6,5 @@ nltk
 spacy
 re
 matplotlib
+tensorflow
+keras
