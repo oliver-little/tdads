@@ -340,4 +340,3 @@ if __name__ == '__main__':
     # tweets.text = stem_texts(tweets.text)
     tweets.text = lemmatize_texts(tweets.text)
     print(tweets.text)
-    
